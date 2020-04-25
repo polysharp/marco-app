@@ -4,15 +4,20 @@ import { Icon } from 'leaflet';
 
 import * as markets from './markets-placeholder.json';
 
-const defaultCoords = ['48.882767', '2.176930'];
-
 const App = () => {
   const [selectedMarket, setSelectedMarket] = useState(null);
+  const [location, setLocation] = useState(['', '']);
+
+  const onLocationChanged = (lat, lon) => {
+    setLocation([lat, lon]);
+    console.log(`New location set to : ${lat} / ${lon}`);
+    // TODO: CALL API TO GET ALL MARKET IN CITY (ZIP CODE);
+  };
 
   useEffect(() => {
     if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        console.log(position);
+      navigator.geolocation.getCurrentPosition(({ coords }) => {
+        onLocationChanged(coords.latitude, coords.longitude);
       });
     } else {
       console.log('Geolocation is not available. User has to type manually.');
@@ -20,7 +25,7 @@ const App = () => {
   }, []);
 
   return (
-    <Map center={defaultCoords} zoom={14}>
+    <Map center={location} zoom={14}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
