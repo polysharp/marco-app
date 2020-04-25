@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './loading.css';
+import './styles/loading.css';
 
 const Spinner = () => (
   <div className="lds-grid">
