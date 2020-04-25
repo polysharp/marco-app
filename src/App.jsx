@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import { Icon } from 'leaflet';
 
@@ -8,6 +8,16 @@ const defaultCoords = ['48.882767', '2.176930'];
 
 const App = () => {
   const [selectedMarket, setSelectedMarket] = useState(null);
+
+  useEffect(() => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        console.log(position);
+      });
+    } else {
+      console.log('Geolocation is not available. User has to type manually.');
+    }
+  }, []);
 
   return (
     <Map center={defaultCoords} zoom={14}>
