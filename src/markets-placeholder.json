@@ -1,0 +1,20 @@
+{
+  "amount": "3",
+  "items": [
+    {
+      "id": "1",
+      "name": "Place de l'église",
+      "coords": ["48.876303", "2.180934"]
+    },
+    {
+      "id": "2",
+      "name": "Haut de Rueil",
+      "coords": ["48.872117", "2.194327"]
+    },
+    {
+      "id": "3",
+      "name": "Gare de Rueil",
+      "coords": ["48.887104", "2.171008"]
+    }
+  ]
+}
