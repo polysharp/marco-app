@@ -1,3 +1,4 @@
+/* purgecss start ignore */
 .lds-grid {
   display: inline-block;
   position: absolute;
@@ -69,3 +70,4 @@
     opacity: 0.5;
   }
 }
+/* purgecss end ignore */
