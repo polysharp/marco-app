@@ -1,7 +1,7 @@
 .leaflet-container {
   width: 60%;
   left: 40%;
-  height: calc(100vh - 72px);
+  height: calc(100vh - 80px);
 }
 
 .leaf-popup {

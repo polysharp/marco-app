@@ -13,7 +13,7 @@ const searchQuery = async (search) => {
 };
 
 const Search = observer(() => {
-  const { setUser } = useContext(StoreContext);
+  const { setCity, fetchCityPolygon } = useContext(StoreContext);
 
   const [search, setSearch] = useState('');
   const { data } = useQuery(search, searchQuery);
@@ -22,8 +22,10 @@ const Search = observer(() => {
   const [showCities, setShowCities] = useState(false);
 
   const handleCitySelect = (el) => {
-    setUser(el.coordinates, el);
-    setSearch(`${el.name}, ${el.zip[0]}`);
+    setSearch(el.name);
+    setCity(el.coordinates, el);
+    setShowCities(false);
+    fetchCityPolygon(el.zip[0]);
   };
 
   useEffect(() => {
@@ -41,30 +43,23 @@ const Search = observer(() => {
 
   return (
     <div ref={ref}>
-      <div className="bg-white shadow p-4 flex">
-        <span className="w-auto flex justify-end items-center text-gray-500 p-2">L</span>
-        <input
-          name="search"
-          type="text"
-          placeholder="Essayez 'Paris'"
-          aria-autocomplete="list"
-          autoComplete="off"
-          autoCorrect="off"
-          spellCheck="false"
-          className="w-1/2 rounded p-2"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onClick={() => setShowCities(true)}
-        />
-
-        <button
-          type="button"
-          className="bg-red-400 hover:bg-red-300 rounded text-white p-2 pl-4 pr-4 font-semibold text-xs"
-          onClick={() => console.log('Need to trigger query')}
-        >
-          Recherche
-        </button>
-      </div>
+      <section className="bg-indigo-900">
+        <div className="container mx-auto py-4 px-4">
+          <input
+            name="search"
+            type="text"
+            placeholder="Essayez 'Paris'"
+            aria-autocomplete="list"
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck="false"
+            className="w-full h-12 rounded focus:outline-none focus:shadow-outline text-xl px-4 py-2 shadow-lg"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onClick={() => setShowCities(true)}
+          />
+        </div>
+      </section>
       <div>
         {showCities &&
           data &&

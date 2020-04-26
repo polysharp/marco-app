@@ -1,11 +1,14 @@
 import React from 'react';
 import { observable, action } from 'mobx';
 
+const API = 'https://marco-api.herokuapp.com/api/v1';
+
 export const Store = () => {
   const store = observable({
-    user: {
+    city: {
       location: ['48.882767', '2.176930'],
-      city: '',
+      polygon: [],
+      data: {},
     },
     markets: [
       {
@@ -137,18 +140,19 @@ export const Store = () => {
       },
     ],
     market: null,
-
-    setUser: action((location, city) => {
-      store.user.location = location;
-      store.user.city = city;
+    setCity: action((location, data) => {
+      store.city.location = location;
+      store.city.data = data;
     }),
-    setUserLocation: action((location) => {
-      store.user.location = location;
+    fetchCityPolygon: action(async (zip) => {
+      const response = await fetch(`${API}/city/${zip}/polygon`);
+      if (response.ok) {
+        const data = await response.json();
+        store.city.polygon = data;
+      } else {
+        store.city.polygon = [];
+      }
     }),
-    setUserCity: action((city) => {
-      store.user.city = city;
-    }),
-
     setMarkets: action((markets) => {
       store.markets = markets;
     }),
