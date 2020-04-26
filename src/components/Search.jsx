@@ -44,7 +44,7 @@ const Search = observer(() => {
   return (
     <div ref={ref}>
       <section className="bg-indigo-900">
-        <div className="container mx-auto py-4 px-4">
+        <div className="py-4 px-4">
           <input
             name="search"
             type="text"
@@ -60,7 +60,7 @@ const Search = observer(() => {
           />
         </div>
       </section>
-      <div>
+      <div className="flex flex-col">
         {showCities &&
           data &&
           data.length > 0 &&

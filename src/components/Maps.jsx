@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { observer } from 'mobx-react';
-import { Map, Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
+import { Map, Marker, Popup, TileLayer, Polygon, Circle } from 'react-leaflet';
 
 import StoreContext from '../store';
 
@@ -14,7 +14,9 @@ const Maps = observer(() => {
         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
 
-      {city.polygon.length > 0 && <Polygon color="purple" positions={city.polygon} />}
+      <Marker position={city.location} />
+
+      {city.polygon.length > 0 && <Polygon color="red" positions={city.polygon} />}
 
       {markets.map((el) => (
         <Marker key={el.id} position={el.coords} onclick={() => setMarket(el)} />
