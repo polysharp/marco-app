@@ -1,28 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
+import { observer } from 'mobx-react';
 import axios from 'axios';
+
+import StoreContext from '../store';
 
 const API = 'https://marco-api.herokuapp.com/api/v1';
 
-const Search = ({ city, setCity }) => {
+const Search = observer(() => {
+  const { setUser, cities, setCities } = useContext(StoreContext);
+
   const ref = useRef(null);
-  const [cities, setCities] = useState([]);
-
-  const [submitedValue, setSubmitedValue] = useState('');
-  const [search, setSearch] = useState('');
-
   const [showCities, setShowCities] = useState(false);
 
-  Search.handleClickOutside = () => setShowCities(false);
-
-  useEffect(() => {
-    if (!city) return;
-    setSearch(`${city.name}, ${city.zip[0]}`);
-  }, [city]);
+  const [search, setSearch] = useState('');
 
   const handleSearch = async () => {
-    if (search === submitedValue) return;
-
-    setSubmitedValue(search);
     try {
       const { data } = await axios.get(`${API}/cities?search=${search.trim()}`);
       setCities(data);
@@ -32,7 +24,8 @@ const Search = ({ city, setCity }) => {
   };
 
   const handleCitySelect = (el) => {
-    setCity(el);
+    setUser(el.coordinates, el);
+    setSearch(`${el.name}, ${el.zip}`);
     setCities([]);
   };
 
@@ -88,6 +81,6 @@ const Search = ({ city, setCity }) => {
         ))}
     </div>
   );
-};
+});
 
 export default Search;
