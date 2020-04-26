@@ -1,7 +1,8 @@
 import React from 'react';
 import { observer, useLocalStore } from 'mobx-react';
-import StoreContext, { Store } from './store';
+import { ReactQueryDevtools } from 'react-query-devtools';
 
+import StoreContext, { Store } from './store';
 import { Search, Maps } from './components';
 
 const App = observer(() => {
@@ -35,6 +36,7 @@ const App = observer(() => {
     <StoreContext.Provider value={store}>
       <Search />
       <Maps />
+      <ReactQueryDevtools initailIsOpen />
     </StoreContext.Provider>
   );
 });

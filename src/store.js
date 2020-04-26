@@ -7,7 +7,6 @@ export const Store = () => {
       location: ['48.882767', '2.176930'],
       city: '',
     },
-    cities: [],
     markets: [
       {
         id: '1',
@@ -148,10 +147,6 @@ export const Store = () => {
     }),
     setUserCity: action((city) => {
       store.user.city = city;
-    }),
-
-    setCities: action((cities) => {
-      store.cities = cities;
     }),
 
     setMarkets: action((markets) => {

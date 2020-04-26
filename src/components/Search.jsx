@@ -1,37 +1,30 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react';
-import axios from 'axios';
+import { useQuery } from 'react-query';
 
 import StoreContext from '../store';
 
 const API = 'https://marco-api.herokuapp.com/api/v1';
 
+const searchQuery = async (search) => {
+  const response = await fetch(`${API}/cities?search=${search.trim()}`);
+  const data = await response.json();
+  return data;
+};
+
 const Search = observer(() => {
-  const { setUser, cities, setCities } = useContext(StoreContext);
+  const { setUser } = useContext(StoreContext);
+
+  const [search, setSearch] = useState('');
+  const { data } = useQuery(search, searchQuery);
 
   const ref = useRef(null);
   const [showCities, setShowCities] = useState(false);
 
-  const [search, setSearch] = useState('');
-
-  const handleSearch = async () => {
-    try {
-      const { data } = await axios.get(`${API}/cities?search=${search.trim()}`);
-      setCities(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const handleCitySelect = (el) => {
     setUser(el.coordinates, el);
-    setSearch(`${el.name}, ${el.zip}`);
-    setCities([]);
+    setSearch(`${el.name}, ${el.zip[0]}`);
   };
-
-  useEffect(() => {
-    handleSearch();
-  }, [search]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -60,25 +53,28 @@ const Search = observer(() => {
           spellCheck="false"
           className="w-1/2 rounded p-2"
           value={search}
-          onChange={(e) => setSearch(e.target.value.trim())}
+          onChange={(e) => setSearch(e.target.value)}
           onClick={() => setShowCities(true)}
         />
 
         <button
           type="button"
           className="bg-red-400 hover:bg-red-300 rounded text-white p-2 pl-4 pr-4 font-semibold text-xs"
-          onClick={() => handleSearch()}
+          onClick={() => console.log('Need to trigger query')}
         >
           Recherche
         </button>
       </div>
-      {showCities &&
-        cities.length > 0 &&
-        cities.map((el, index) => (
-          <button key={index} type="button" onClick={() => handleCitySelect(el)}>
-            {`${el.name}(${el.zip[0]})`}
-          </button>
-        ))}
+      <div>
+        {showCities &&
+          data &&
+          data.length > 0 &&
+          data.map((el, index) => (
+            <button key={index} type="button" onClick={() => handleCitySelect(el)}>
+              {`${el.name}(${el.zip[0]})`}
+            </button>
+          ))}
+      </div>
     </div>
   );
 });
