@@ -64,6 +64,7 @@ const Search = observer(() => {
         {showCities &&
           data &&
           data.length > 0 &&
+          data.name &&
           data.map((el, index) => (
             <button key={index} type="button" onClick={() => handleCitySelect(el)}>
               {`${el.name}(${el.zip[0]})`}
